@@ -18,10 +18,15 @@ public class Receiver implements Runnable {
 
     @Override
     public void run() {
+        BufferedImage image;
+
         while (true) {
             try {
-                BufferedImage bufferedImage = ImageIO.read(input);
-                imageIcon.setImage(bufferedImage);
+                System.out.println(1);
+                image = ImageIO.read(input);
+                System.out.println(2);
+                imageIcon.setImage(image);
+                System.out.println(3);
             } catch (IOException e) {
                 e.printStackTrace();
             }
