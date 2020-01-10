@@ -1,12 +1,12 @@
 package pllapallpal.gui;
 
-import pllapallpal.gui.model.ServerModel;
+import pllapallpal.model.ServerModel;
+import pllapallpal.netio.Receiver;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -36,6 +36,7 @@ public class ServerMainPanel {
         serverModel = new ServerModel(11111);
 
         sendButton = new JButton("Send Image");
+        sendButton.setToolTipText("Send Image");
         sendButton.addActionListener(event -> {
             try {
                 System.out.println("button clicked");

@@ -1,6 +1,7 @@
 package pllapallpal.gui;
 
-import pllapallpal.gui.model.ClientModel;
+import pllapallpal.model.ClientModel;
+import pllapallpal.netio.Receiver;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

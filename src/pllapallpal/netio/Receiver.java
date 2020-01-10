@@ -1,7 +1,6 @@
-package pllapallpal.gui;
+package pllapallpal.netio;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -24,7 +23,7 @@ public class Receiver implements Runnable {
 
         while (true) {
             try {
-                // receive the size of image from inputStream
+                // receive the size of image from the inputStream
                 byte[] sizeArray = new byte[4];
                 input.read(sizeArray);
                 // receive the actual image
