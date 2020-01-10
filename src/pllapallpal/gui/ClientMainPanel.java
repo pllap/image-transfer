@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 
 public class ClientMainPanel {
 
@@ -19,6 +20,8 @@ public class ClientMainPanel {
     private JButton sendButton;
 
     private ClientModel clientModel;
+
+    private Receiver receiver;
     private Thread receiveThread;
 
     public ClientMainPanel() {
@@ -36,15 +39,28 @@ public class ClientMainPanel {
             try {
                 System.out.println("button clicked");
                 BufferedImage image = ImageIO.read(new File("res/test.png"));
-                ImageIO.write(image, "png", clientModel.getOutput());
+                ImageIO.write(image, "png", clientModel.getByteArrayOutputStream());
+
+                // write the size of image firstly, actual image secondly
+                byte[] sizeArray = ByteBuffer.allocate(4).putInt(clientModel.getByteArrayOutputStream().size()).array();
+                byte[] byteArray = clientModel.getByteArrayOutputStream().toByteArray();
+                clientModel.getOutput().write(sizeArray);
+                clientModel.getOutput().write(byteArray);
+                clientModel.getOutput().flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
         mainPanel.add(sendButton, BorderLayout.SOUTH);
 
-        receiveThread = new Thread(new Receiver(clientModel.getInput(), imageIcon));
+        receiver = new Receiver(clientModel.getInput());
+        receiver.addChangeImage(this::changeImage);
+        receiveThread = new Thread(receiver);
         receiveThread.start();
+    }
+
+    public void changeImage(BufferedImage image) {
+        imageIcon.setImage(image);
     }
 
     public JPanel getPanel() {

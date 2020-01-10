@@ -1,12 +1,12 @@
 package pllapallpal.gui;
 
-import pllapallpal.gui.model.ClientModel;
 import pllapallpal.gui.model.ServerModel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -20,6 +20,8 @@ public class ServerMainPanel {
     private JButton sendButton;
 
     private ServerModel serverModel;
+
+    private Receiver receiver;
     private Thread receiveThread;
 
     public ServerMainPanel() {
@@ -45,8 +47,14 @@ public class ServerMainPanel {
         });
         mainPanel.add(sendButton, BorderLayout.SOUTH);
 
-        receiveThread = new Thread(new Receiver(serverModel.getInput(), imageIcon));
+        receiver = new Receiver(serverModel.getInput());
+        receiver.addChangeImage(this::changeImage);
+        receiveThread = new Thread(receiver);
         receiveThread.start();
+    }
+
+    public void changeImage(BufferedImage image) {
+        imageLabel.setIcon(new ImageIcon(image));
     }
 
     public JPanel getPanel() {

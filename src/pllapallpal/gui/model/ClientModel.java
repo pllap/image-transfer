@@ -1,5 +1,6 @@
 package pllapallpal.gui.model;
 
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -12,6 +13,8 @@ public class ClientModel {
     private DataInputStream input;
     private DataOutputStream output;
 
+    private ByteArrayOutputStream byteArrayOutputStream;
+
     public ClientModel(String address, int port) {
 
         try {
@@ -19,6 +22,8 @@ public class ClientModel {
 
             input = new DataInputStream(socket.getInputStream());
             output = new DataOutputStream(socket.getOutputStream());
+
+            byteArrayOutputStream = new ByteArrayOutputStream();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -34,5 +39,9 @@ public class ClientModel {
 
     public DataOutputStream getOutput() {
         return output;
+    }
+
+    public ByteArrayOutputStream getByteArrayOutputStream() {
+        return byteArrayOutputStream;
     }
 }
