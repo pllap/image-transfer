@@ -1,7 +1,6 @@
 package pllapallpal.gui;
 
 import pllapallpal.model.ClientModel;
-import pllapallpal.netio.Receiver;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -22,9 +21,6 @@ public class ClientMainPanel {
 
     private ClientModel clientModel;
 
-    private Receiver receiver;
-    private Thread receiveThread;
-
     public ClientMainPanel() {
         mainPanel = new JPanel(new BorderLayout());
 
@@ -38,7 +34,6 @@ public class ClientMainPanel {
         sendButton = new JButton("Send Image");
         sendButton.addActionListener(event -> {
             try {
-                System.out.println("button clicked");
                 BufferedImage image = ImageIO.read(new File("res/test.png"));
                 ImageIO.write(image, "png", clientModel.getByteArrayOutputStream());
 
@@ -53,11 +48,6 @@ public class ClientMainPanel {
             }
         });
         mainPanel.add(sendButton, BorderLayout.SOUTH);
-
-        receiver = new Receiver(clientModel.getInput());
-        receiver.addChangeImage(this::changeImage);
-        receiveThread = new Thread(receiver);
-        receiveThread.start();
     }
 
     public void changeImage(BufferedImage image) {

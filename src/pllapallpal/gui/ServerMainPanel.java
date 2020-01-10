@@ -3,21 +3,15 @@ package pllapallpal.gui;
 import pllapallpal.model.ServerModel;
 import pllapallpal.netio.Receiver;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class ServerMainPanel {
 
     private JPanel mainPanel;
 
     private JLabel imageLabel;
-    private ImageIcon imageIcon;
-
-    private JButton sendButton;
 
     private ServerModel serverModel;
 
@@ -28,25 +22,12 @@ public class ServerMainPanel {
 
         mainPanel = new JPanel(new BorderLayout());
 
-        imageIcon = new ImageIcon();
-        imageLabel = new JLabel(imageIcon);
+        imageLabel = new JLabel();
+        imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         mainPanel.add(imageLabel, BorderLayout.CENTER);
 
 
         serverModel = new ServerModel(11111);
-
-        sendButton = new JButton("Send Image");
-        sendButton.setToolTipText("Send Image");
-        sendButton.addActionListener(event -> {
-            try {
-                System.out.println("button clicked");
-                BufferedImage image = ImageIO.read(new File("res/test.png"));
-                ImageIO.write(image, "png", serverModel.getOutput());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        mainPanel.add(sendButton, BorderLayout.SOUTH);
 
         receiver = new Receiver(serverModel.getInput());
         receiver.addChangeImage(this::changeImage);
