@@ -34,4 +34,8 @@ public class ServerModel {
     public DataOutputStream getOutput() {
         return output;
     }
+
+    public ServerSocket getServerSocket() {
+        return serverSocket;
+    }
 }

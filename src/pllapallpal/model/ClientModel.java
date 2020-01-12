@@ -44,4 +44,8 @@ public class ClientModel {
     public ByteArrayOutputStream getByteArrayOutputStream() {
         return byteArrayOutputStream;
     }
+
+    public void flushByteArrayOutputStream() {
+        this.byteArrayOutputStream = new ByteArrayOutputStream();
+    }
 }

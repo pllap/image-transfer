@@ -33,21 +33,33 @@ public class ClientMainPanel {
 
         sendButton = new JButton("Send Image");
         sendButton.addActionListener(event -> {
-            try {
-                BufferedImage image = ImageIO.read(new File("res/test.png"));
-                ImageIO.write(image, "png", clientModel.getByteArrayOutputStream());
-
-                // write the size of image firstly, actual image secondly
-                byte[] sizeArray = ByteBuffer.allocate(4).putInt(clientModel.getByteArrayOutputStream().size()).array();
-                byte[] byteArray = clientModel.getByteArrayOutputStream().toByteArray();
-                clientModel.getOutput().write(sizeArray);
-                clientModel.getOutput().write(byteArray);
-                clientModel.getOutput().flush();
-            } catch (IOException e) {
-                e.printStackTrace();
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setCurrentDirectory(new File("C:/Users/pllap/Pictures"));
+            int value = fileChooser.showOpenDialog(null);
+            if (value == JFileChooser.APPROVE_OPTION) {
+                sendFile(fileChooser);
             }
         });
         mainPanel.add(sendButton, BorderLayout.SOUTH);
+    }
+
+    public void sendFile(JFileChooser fileChooser) {
+        try {
+            BufferedImage image = ImageIO.read(fileChooser.getSelectedFile());
+            imageLabel.setIcon(new ImageIcon(image));
+            ImageIO.write(image, "png", clientModel.getByteArrayOutputStream());
+
+            // write the size of image firstly, actual image secondly
+            byte[] sizeArray = ByteBuffer.allocate(4).putInt(clientModel.getByteArrayOutputStream().size()).array();
+            byte[] byteArray = clientModel.getByteArrayOutputStream().toByteArray();
+
+            clientModel.getOutput().write(sizeArray);
+            clientModel.getOutput().write(byteArray);
+            clientModel.flushByteArrayOutputStream();
+            clientModel.getOutput().flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void changeImage(BufferedImage image) {
