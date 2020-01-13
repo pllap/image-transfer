@@ -1,16 +1,16 @@
-package pllapallpal.gui;
+package pllapallpal.datastream.gui;
 
 import javax.swing.*;
 
-public class ClientMainFrame {
+public class ServerMainFrame {
 
     private JFrame mainFrame;
-    private ClientMainPanel mainPanel;
+    private ServerMainPanel mainPanel;
 
-    public ClientMainFrame() {
-        mainFrame = new JFrame("Client");
+    public ServerMainFrame() {
+        mainFrame = new JFrame("Server");
 
-        mainPanel = new ClientMainPanel();
+        mainPanel = new ServerMainPanel();
         mainFrame.getContentPane().add(mainPanel.getPanel());
 
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

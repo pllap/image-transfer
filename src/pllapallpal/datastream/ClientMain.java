@@ -1,6 +1,6 @@
-package pllapallpal;
+package pllapallpal.datastream;
 
-import pllapallpal.gui.ClientMainFrame;
+import pllapallpal.datastream.gui.ClientMainFrame;
 
 public class ClientMain {
 

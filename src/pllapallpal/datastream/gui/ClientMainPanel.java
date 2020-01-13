@@ -1,6 +1,6 @@
-package pllapallpal.gui;
+package pllapallpal.datastream.gui;
 
-import pllapallpal.model.ClientModel;
+import pllapallpal.datastream.model.ClientModel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -9,6 +9,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.zip.GZIPOutputStream;
 
 public class ClientMainPanel {
 
@@ -46,17 +48,32 @@ public class ClientMainPanel {
     public void sendFile(JFileChooser fileChooser) {
         try {
             BufferedImage image = ImageIO.read(fileChooser.getSelectedFile());
-            imageLabel.setIcon(new ImageIcon(image));
+
+            GZIPOutputStream gzipOutputStreamSize = new GZIPOutputStream(clientModel.getOutput());
+            GZIPOutputStream gzipOutputStreamImg = new GZIPOutputStream(clientModel.getOutput());
+
             ImageIO.write(image, "png", clientModel.getByteArrayOutputStream());
 
             // write the size of image firstly, actual image secondly
             byte[] sizeArray = ByteBuffer.allocate(4).putInt(clientModel.getByteArrayOutputStream().size()).array();
             byte[] byteArray = clientModel.getByteArrayOutputStream().toByteArray();
+            System.out.println(ByteBuffer.wrap(sizeArray).asIntBuffer().get());
+            System.out.println(Arrays.toString(byteArray));
 
-            clientModel.getOutput().write(sizeArray);
-            clientModel.getOutput().write(byteArray);
+            gzipOutputStreamSize.write(sizeArray);
+            gzipOutputStreamSize.finish();
+            gzipOutputStreamSize.flush();
+
+            gzipOutputStreamImg.write(byteArray);
+            gzipOutputStreamImg.finish();
+            gzipOutputStreamImg.flush();
+            System.out.println("flush");
+//            clientModel.getOutput().write(sizeArray);
+//            clientModel.getOutput().write(byteArray);
             clientModel.flushByteArrayOutputStream();
-            clientModel.getOutput().flush();
+//            clientModel.getOutput().flush();
+
+            imageLabel.setIcon(new ImageIcon(image));
         } catch (IOException e) {
             e.printStackTrace();
         }

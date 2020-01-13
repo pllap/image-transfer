@@ -1,7 +1,7 @@
-package pllapallpal.gui;
+package pllapallpal.datastream.gui;
 
-import pllapallpal.model.ServerModel;
-import pllapallpal.netio.Receiver;
+import pllapallpal.datastream.model.ServerModel;
+import pllapallpal.datastream.netio.Receiver;
 
 import javax.swing.*;
 import java.awt.*;

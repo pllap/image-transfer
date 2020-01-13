@@ -1,4 +1,4 @@
-package pllapallpal.model;
+package pllapallpal.datastream.model;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;

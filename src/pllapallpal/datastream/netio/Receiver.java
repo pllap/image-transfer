@@ -1,4 +1,4 @@
-package pllapallpal.netio;
+package pllapallpal.datastream.netio;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.function.Consumer;
+import java.util.zip.GZIPInputStream;
 
 public class Receiver implements Runnable {
 
@@ -27,15 +28,21 @@ public class Receiver implements Runnable {
         while (true) {
             try {
                 System.out.println("receiver");
+
+                GZIPInputStream gzipInputStream = new GZIPInputStream(input);
+
                 // receive the size of image from the inputStream
                 byte[] sizeArray = new byte[4];
-                input.read(sizeArray);
+                gzipInputStream.read(sizeArray);
+                System.out.println("read");
+//                input.read(sizeArray);
                 int size = ByteBuffer.wrap(sizeArray).asIntBuffer().get();
                 System.out.println("size " + size);
 
                 // receive the actual image
                 byte[] imageArray = new byte[size];
-                input.read(imageArray);
+                gzipInputStream.read(imageArray);
+//                input.read(imageArray);
                 System.out.println(Arrays.toString(imageArray));
 
                 BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageArray));
